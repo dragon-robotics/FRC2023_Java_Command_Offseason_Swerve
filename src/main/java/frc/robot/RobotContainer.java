@@ -46,9 +46,9 @@ public class RobotContainer {
 
     m_swerveDriveSubsystem.setDefaultCommand(
       m_swerveDriveSubsystem.drive(
-        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_RIGHT_Y),
-        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_RIGHT_X),
-        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_LEFT_X)
+        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_RIGHT_Y) * 0.3,
+        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_RIGHT_X) * 0.3,
+        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_LEFT_X) * 0.3
       )
     );
 
