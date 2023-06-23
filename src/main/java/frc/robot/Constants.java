@@ -62,4 +62,64 @@ public final class Constants {
     public static final int BTN_STICK_LEFT = 9;
     public static final int BTN_STICK_RIGHT = 10;
   }
+
+  public static class Extreme3DProConstants {
+    // Extreme 3D Pro Analog Axis/Stick //
+    public static final int X_AXIS = 0;
+    public static final int Y_AXIS = 1;
+    public static final int ROTATE = 2;
+    public static final int SLIDER = 3;
+
+    // Extreme 3D Pro Buttons //
+    public static final int BTN_TRIGGER = 1;
+    public static final int BTN_THUMB = 2;
+    public static final int BTN_BOT_LEFT = 3;
+    public static final int BTN_BOT_RIGHT = 4;
+    public static final int BTN_TOP_LEFT = 5;
+    public static final int BTN_TOP_RIGHT = 6;
+    public static final int BTN_7 = 7;
+    public static final int BTN_8 = 8;
+    public static final int BTN_9 = 9;
+    public static final int BTN_10 = 10;
+    public static final int BTN_11 = 11;
+    public static final int BTN_12 = 12;
+  }
+
+  public static class BucketMotorConstants {
+    /**
+     * Which PID slot to pull gains from. Starting 2018, you can choose from
+     * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
+     * configuration.
+     */
+    public static final int kSlotIdx = 0;
+
+    /**
+     * Talon FX supports multiple (cascaded) PID loops. For
+     * now we just want the primary one.
+     */
+    public static final int kPIDLoopIdx = 0;
+
+    /**
+     * set to zero to skip waiting for confirmation, set to nonzero to wait and
+     * report to DS if action fails.
+     */
+    public static final int kTimeoutMs = 30;
+
+    /**
+     * set deadband to super small 0.001 (0.1 %). 
+     * The default deadband is 0.04 (4 %)
+     */
+    public static final double kDeadband = 0.001;
+
+    /**
+	   * Gains used in Motion Magic, to be adjusted accordingly
+     * Gains(kp, ki, kd, kf, izone, peak output);
+     */
+    public static final double kP = 0.2;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kF = 0.2;
+    public static final int kIzone = 0;
+    public static final double kPeakOutput = 1.0;
+  }
 }

@@ -25,6 +25,8 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveDriveSubsystem extends SubsystemBase {
 
+  private boolean m_throttle;
+
   private final SwerveDrive swerve;
 
   private SlewRateLimiter translationLimiter = new SlewRateLimiter(Units.feetToMeters(14.5));
@@ -33,6 +35,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Creates a new SwerveDriveSubsystem. */
   public SwerveDriveSubsystem() {
+
+    // Set throttle to false //
+    m_throttle = false;
+
     // Add Swerve Drive Telemetry //
     if (SpartanEntryManager.isTuningMode()) {
       SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -53,20 +59,26 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   public Command drive(
-    DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup) {
+    DoubleSupplier translationSup,
+    DoubleSupplier strafeSup,
+    DoubleSupplier rotationSup
+  ) {
     return run(() -> {
+          double translation = m_throttle ? translationSup.getAsDouble() * 0.3 : translationSup.getAsDouble();
+          double strafe = m_throttle ? strafeSup.getAsDouble() * 0.3 : strafeSup.getAsDouble();
+          double rotation = m_throttle ? rotationSup.getAsDouble() * 0.3 : rotationSup.getAsDouble();
           double translationVal =
               translationLimiter.calculate(
                   MathUtil.applyDeadband(
-                      translationSup.getAsDouble(), Constants.GeneralConstants.swerveDeadband));
+                      translation, Constants.GeneralConstants.swerveDeadband));
           double strafeVal =
               strafeLimiter.calculate(
                   MathUtil.applyDeadband(
-                      strafeSup.getAsDouble(), Constants.GeneralConstants.swerveDeadband));
+                      strafe, Constants.GeneralConstants.swerveDeadband));
           double rotationVal =
               rotationLimiter.calculate(
                   MathUtil.applyDeadband(
-                      rotationSup.getAsDouble(), Constants.GeneralConstants.swerveDeadband));
+                      rotation, Constants.GeneralConstants.swerveDeadband));
 
           drive(
               new Translation2d(translationVal, strafeVal)
@@ -80,40 +92,44 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   public void drive(
     Translation2d translationVal, double rotationVal, boolean fieldRelative, boolean openLoop) {
-  swerve.drive(translationVal, rotationVal, fieldRelative, openLoop);
-}
+    swerve.drive(translationVal, rotationVal, fieldRelative, openLoop);
+  }
 
-public void setChassisSpeeds(ChassisSpeeds speeds) {
-  swerve.setChassisSpeeds(speeds);
-}
+  public void setChassisSpeeds(ChassisSpeeds speeds) {
+    swerve.setChassisSpeeds(speeds);
+  }
 
-public void setMotorBrake(boolean brake) {
-  swerve.setMotorIdleMode(brake);
-}
+  public void setMotorBrake(boolean brake) {
+    swerve.setMotorIdleMode(brake);
+  }
 
-public void zeroGyro() {
-  swerve.zeroGyro();
-}
+  public void zeroGyro() {
+    swerve.zeroGyro();
+  }
 
-public void lock() {
-  swerve.lockPose();
-}
+  public void lock() {
+    swerve.lockPose();
+  }
 
-public double getYaw() {
-  return swerve.getYaw().getDegrees();
-}
+  public double getYaw() {
+    return swerve.getYaw().getDegrees();
+  }
 
-public double getPitch() {
-  return swerve.getPitch().getDegrees();
-}
+  public double getPitch() {
+    return swerve.getPitch().getDegrees();
+  }
 
-public void resetOdometry(Pose2d pose) {
-  swerve.resetOdometry(pose);
-}
+  public void resetOdometry(Pose2d pose) {
+    swerve.resetOdometry(pose);
+  }
 
-public Pose2d getPose() {
-  return swerve.getPose();
-}
+  public Pose2d getPose() {
+    return swerve.getPose();
+  }
+
+  public void setThrottle(boolean throttle) {
+    m_throttle = throttle;
+  }
 
   @Override
   public void periodic() {

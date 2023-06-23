@@ -4,8 +4,10 @@
 
 package frc.robot;
 
-import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.Extreme3DProConstants;
+// import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveDriveSubsystem m_swerveDriveSubsystem = new SwerveDriveSubsystem();
+  private final BucketSubsystem m_bucketSubsystem = new BucketSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverController =
@@ -46,19 +49,29 @@ public class RobotContainer {
 
     m_swerveDriveSubsystem.setDefaultCommand(
       m_swerveDriveSubsystem.drive(
-        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_RIGHT_Y) * 0.3,
-        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_RIGHT_X) * 0.3,
-        () -> -m_driverController.getRawAxis(JoystickConstants.STICK_LEFT_X) * 0.3
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.Y_AXIS), // Translation
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.X_AXIS), // Strafe
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.ROTATE)  // Rotation
       )
     );
+
+    // m_bucketSubsystem.setDefaultCommand(
+
+    // );
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // new Trigger(m_swerveDriveSubsystem::exampleCondition)
     //     .onTrue(new ExampleCommand(m_swerveDriveSubsystem));
 
-    // When A is pressed by the driver, zero the gyro //
-    m_driverController.button(JoystickConstants.BTN_A)
+    // When thumb button is pressed by the driver, zero the gyro //
+    m_driverController.button(Extreme3DProConstants.BTN_THUMB)
         .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.zeroGyro()));
+
+    // When trigger button is pressed by the driver, make the speed 40%, otherwise, full speed //
+    // Used to slow down robot when climbing onto charge station //
+    m_driverController.button(Extreme3DProConstants.BTN_TRIGGER)
+        .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(true)))
+        .onFalse(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(false)));
   }
 
   /**
