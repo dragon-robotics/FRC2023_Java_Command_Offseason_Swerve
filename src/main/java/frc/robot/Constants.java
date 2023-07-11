@@ -86,6 +86,10 @@ public final class Constants {
   }
 
   public static class BucketMotorConstants {
+
+    // Bucket Motor //
+    public static final int kBucketMotor = 6;
+
     /**
      * Which PID slot to pull gains from. Starting 2018, you can choose from
      * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
@@ -115,10 +119,10 @@ public final class Constants {
 	   * Gains used in Motion Magic, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
-    public static final double kP = 0.2;
+    public static final double kP = 1;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
-    public static final double kF = 0.2;
+    public static final double kF = 0.0;
     public static final int kIzone = 0;
     public static final double kPeakOutput = 1.0;
   }

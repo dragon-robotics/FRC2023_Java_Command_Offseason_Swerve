@@ -5,12 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.Extreme3DProConstants;
-// import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,6 +30,10 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverController =
       new CommandJoystick(OperatorConstants.kDriverControllerPort);
+
+  private final CommandJoystick m_operatorController =
+      new CommandJoystick(OperatorConstants.kOperatorControllerPort);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,14 +54,21 @@ public class RobotContainer {
 
     m_swerveDriveSubsystem.setDefaultCommand(
       m_swerveDriveSubsystem.drive(
-        () -> -m_driverController.getRawAxis(Extreme3DProConstants.Y_AXIS), // Translation
-        () -> -m_driverController.getRawAxis(Extreme3DProConstants.X_AXIS), // Strafe
-        () -> -m_driverController.getRawAxis(Extreme3DProConstants.ROTATE)  // Rotation
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.Y_AXIS) * 0.3, // Translation
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.X_AXIS) * 0.3, // Strafe
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.ROTATE) * 0.3  // Rotation
       )
     );
 
-    // m_bucketSubsystem.setDefaultCommand(
+    m_bucketSubsystem.setDefaultCommand(
+      Commands.run(() -> m_bucketSubsystem.stop())
+    );
 
+    // m_bucketSubsystem.setDefaultCommand(
+    //   new MoveBucket(
+    //     m_bucketSubsystem,
+    //     () -> -m_operatorController.getRawAxis(JoystickConstants.STICK_RIGHT_Y) * 0.3
+    //   )
     // );
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
@@ -72,6 +84,18 @@ public class RobotContainer {
     m_driverController.button(Extreme3DProConstants.BTN_TRIGGER)
         .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(true)))
         .onFalse(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(false)));
+    
+    m_operatorController.button(JoystickConstants.BTN_A)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
+
+    m_operatorController.button(JoystickConstants.BTN_B)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)));
+
+    m_operatorController.button(JoystickConstants.BTN_X)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-8192)));
+
+    m_operatorController.button(JoystickConstants.BTN_Y)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-2048)));
   }
 
   /**

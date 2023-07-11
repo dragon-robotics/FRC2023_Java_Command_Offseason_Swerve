@@ -14,7 +14,7 @@ import frc.robot.Constants.BucketMotorConstants;
 
 public class BucketSubsystem extends SubsystemBase {
 
-  private final WPI_TalonFX m_bucketMotor = new WPI_TalonFX(5);
+  private final WPI_TalonFX m_bucketMotor = new WPI_TalonFX(BucketMotorConstants.kBucketMotor);
 
   /** Creates a new BucketSubsystem. */
   public BucketSubsystem() {
@@ -27,7 +27,7 @@ public class BucketSubsystem extends SubsystemBase {
     m_bucketMotor.set(TalonFXControlMode.PercentOutput, 0);
 
     // Set neutral mode to coast on all motors //
-    m_bucketMotor.setNeutralMode(NeutralMode.Coast);
+    m_bucketMotor.setNeutralMode(NeutralMode.Brake);
 
     // Set Falcon 500 Voltage Compensation to 10V //
     m_bucketMotor.configVoltageCompSaturation(10);
@@ -69,13 +69,18 @@ public class BucketSubsystem extends SubsystemBase {
       0,
       BucketMotorConstants.kPIDLoopIdx,
       BucketMotorConstants.kTimeoutMs);
-    
+
+    // Configure smoothness of motion magic //
+    m_bucketMotor.configMotionSCurveStrength(1);
+
+    // Configure Closed-Loop Ramp Rate //
+    m_bucketMotor.configClosedloopRamp(0.1, 0);
   }
 
   public void setToPosition(int position) {
     /* 2048 ticks/rev * 10 Rotations in either direction */
-			double targetPos = position * 2048 * 10.0;
-			m_bucketMotor.set(TalonFXControlMode.MotionMagic, targetPos);
+			// double targetPos = position * 2048 * 10.0;
+			m_bucketMotor.set(TalonFXControlMode.MotionMagic, position);
   }
 
   public void setMotionSCurveStrength(int smoothing) {
@@ -95,6 +100,10 @@ public class BucketSubsystem extends SubsystemBase {
 
   public void stop() {
     m_bucketMotor.set(TalonFXControlMode.PercentOutput, 0);
+  }
+
+  public void move(double speed) {
+    m_bucketMotor.set(TalonFXControlMode.PercentOutput, speed);
   }
 
   @Override
