@@ -61,7 +61,7 @@ public class RobotContainer {
     );
 
     m_bucketSubsystem.setDefaultCommand(
-      Commands.run(() -> m_bucketSubsystem.stop())
+      Commands.run(() -> m_bucketSubsystem.stop(), m_bucketSubsystem)
     );
 
     // m_bucketSubsystem.setDefaultCommand(
