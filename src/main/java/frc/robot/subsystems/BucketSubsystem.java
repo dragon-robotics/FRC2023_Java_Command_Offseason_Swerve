@@ -69,7 +69,7 @@ public class BucketSubsystem extends SubsystemBase {
     m_bucketMotor.configPeakOutputForward(1, BucketMotorConstants.kTimeoutMs);
     m_bucketMotor.configPeakOutputReverse(-1, BucketMotorConstants.kTimeoutMs);
 
-    /* Configure PID Values */
+    /* Configure PID Values for Motion Magic */
     m_bucketMotor.selectProfileSlot(
       BucketMotorConstants.kSlotIdx, BucketMotorConstants.kPIDLoopIdx);
     m_bucketMotor.config_kP(
@@ -97,6 +97,8 @@ public class BucketSubsystem extends SubsystemBase {
       BucketMotorConstants.kPeakOutput,
       BucketMotorConstants.kTimeoutMs);
 
+    /* Configure PID Values for Position */
+    
     /* Set acceleration and vcruise velocity - see documentation */
     m_bucketMotor.configMotionCruiseVelocity(
         15000,

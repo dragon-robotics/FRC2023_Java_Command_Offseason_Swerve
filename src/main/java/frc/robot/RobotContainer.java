@@ -60,9 +60,11 @@ public class RobotContainer {
       )
     );
 
-    m_bucketSubsystem.setDefaultCommand(
-      Commands.run(() -> m_bucketSubsystem.stop(), m_bucketSubsystem)
-    );
+    // m_bucketSubsystem.setDefaultCommand(
+    //   Commands.run(
+    //     () -> m_bucketSubsystem.setToPosition(0),
+    //     m_bucketSubsystem)
+    // );
 
     // m_bucketSubsystem.setDefaultCommand(
     //   new MoveBucket(
@@ -76,26 +78,37 @@ public class RobotContainer {
     //     .onTrue(new ExampleCommand(m_swerveDriveSubsystem));
 
     // When thumb button is pressed by the driver, zero the gyro //
-    m_driverController.button(Extreme3DProConstants.BTN_THUMB)
+    m_driverController.button(Extreme3DProConstants.BTN_TRIGGER)
         .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.zeroGyro()));
 
     // When trigger button is pressed by the driver, make the speed 40%, otherwise, full speed //
     // Used to slow down robot when climbing onto charge station //
-    m_driverController.button(Extreme3DProConstants.BTN_TRIGGER)
+    m_driverController.button(Extreme3DProConstants.BTN_THUMB)
         .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(true)))
         .onFalse(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(false)));
     
-    m_operatorController.button(JoystickConstants.BTN_A)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
-
     m_operatorController.button(JoystickConstants.BTN_B)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)));
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
 
     m_operatorController.button(JoystickConstants.BTN_X)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-8192)));
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-16384)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
 
     m_operatorController.button(JoystickConstants.BTN_Y)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-2048)));
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-2048)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
+
+    // 3.   Home - starting configuration
+    // 2.   Single player station - Cone & Cube
+    // 8.   Hybrid Grid - Score Cube
+    // 9.   Hybrid Grid - Score Cone
+    // 4.   Long distance cube (far side of charging station)
+    // 5.   Long distance cone
+    // 10.  Level 3 Grid - Score Cone
+    // 1.   Level 2 Grid - Score Cube
+    // 6.   Level 2 Grid - Score Cone
+    // 7.   Level 3 Grid - Score cube
   }
 
   /**
