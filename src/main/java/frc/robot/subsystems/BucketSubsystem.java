@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BucketMotorConstants;
@@ -18,6 +19,9 @@ public class BucketSubsystem extends SubsystemBase {
 
   // Position of the motor //
   private int m_position;
+
+  // Control mode of the motor //
+  private TalonFXControlMode m_controlMode;
 
   /** Creates a new BucketSubsystem. */
   public BucketSubsystem() {
@@ -70,34 +74,56 @@ public class BucketSubsystem extends SubsystemBase {
     m_bucketMotor.configPeakOutputReverse(-1, BucketMotorConstants.kTimeoutMs);
 
     /* Configure PID Values for Motion Magic */
-    m_bucketMotor.selectProfileSlot(
-      BucketMotorConstants.kSlotIdx, BucketMotorConstants.kPIDLoopIdx);
     m_bucketMotor.config_kP(
-      BucketMotorConstants.kSlotIdx,
-      BucketMotorConstants.kP,
+      BucketMotorConstants.kMMSlotIdx,
+      BucketMotorConstants.kMMP,
       BucketMotorConstants.kTimeoutMs);
     m_bucketMotor.config_kI(
-      BucketMotorConstants.kSlotIdx,
-      BucketMotorConstants.kI,
+      BucketMotorConstants.kMMSlotIdx,
+      BucketMotorConstants.kMMI,
       BucketMotorConstants.kTimeoutMs);
     m_bucketMotor.config_kD(
-      BucketMotorConstants.kSlotIdx,
-      BucketMotorConstants.kD,
+      BucketMotorConstants.kMMSlotIdx,
+      BucketMotorConstants.kMMD,
       BucketMotorConstants.kTimeoutMs);
     m_bucketMotor.config_kF(
-      BucketMotorConstants.kSlotIdx,
-      BucketMotorConstants.kF,
+      BucketMotorConstants.kMMSlotIdx,
+      BucketMotorConstants.kMMF,
       BucketMotorConstants.kTimeoutMs);
     m_bucketMotor.config_IntegralZone(
-      BucketMotorConstants.kSlotIdx,
-      BucketMotorConstants.kIzone,
+      BucketMotorConstants.kMMSlotIdx,
+      BucketMotorConstants.kMMIzone,
       BucketMotorConstants.kTimeoutMs);
     m_bucketMotor.configClosedLoopPeakOutput(
-      BucketMotorConstants.kSlotIdx,
-      BucketMotorConstants.kPeakOutput,
+      BucketMotorConstants.kMMSlotIdx,
+      BucketMotorConstants.kMMPeakOutput,
       BucketMotorConstants.kTimeoutMs);
 
     /* Configure PID Values for Position */
+    m_bucketMotor.config_kP(
+      BucketMotorConstants.kPosSlotIdx,
+      BucketMotorConstants.kPosP,
+      BucketMotorConstants.kTimeoutMs);
+    m_bucketMotor.config_kI(
+      BucketMotorConstants.kPosSlotIdx,
+      BucketMotorConstants.kPosI,
+      BucketMotorConstants.kTimeoutMs);
+    m_bucketMotor.config_kD(
+      BucketMotorConstants.kPosSlotIdx,
+      BucketMotorConstants.kPosD,
+      BucketMotorConstants.kTimeoutMs);
+    m_bucketMotor.config_kF(
+      BucketMotorConstants.kPosSlotIdx,
+      BucketMotorConstants.kPosF,
+      BucketMotorConstants.kTimeoutMs);
+    m_bucketMotor.config_IntegralZone(
+      BucketMotorConstants.kPosSlotIdx,
+      BucketMotorConstants.kPosIzone,
+      BucketMotorConstants.kTimeoutMs);
+    m_bucketMotor.configClosedLoopPeakOutput(
+      BucketMotorConstants.kPosSlotIdx,
+      BucketMotorConstants.kPosPeakOutput,
+      BucketMotorConstants.kTimeoutMs);    
     
     /* Set acceleration and vcruise velocity - see documentation */
     m_bucketMotor.configMotionCruiseVelocity(
@@ -116,20 +142,36 @@ public class BucketSubsystem extends SubsystemBase {
     
     // Set motor position to 0 //
     m_position = 0;
+
+    // Set motor control to Motion Magic //
+    m_controlMode = TalonFXControlMode.MotionMagic;
+    m_bucketMotor.selectProfileSlot(
+      BucketMotorConstants.kMMSlotIdx, BucketMotorConstants.kPIDLoopIdx);
+
     // m_bucketMotor.set(TalonFXControlMode.MotionMagic, 0);
 
     // Configure smoothness of motion magic //
     m_bucketMotor.configMotionSCurveStrength(1);
 
     // Configure Closed-Loop Ramp Rate //
-    m_bucketMotor.configClosedloopRamp(0.1, 0);
+    // m_bucketMotor.configClosedloopRamp(0.1, 0);
   }
 
   public void setToPosition(int position) {
     /* 2048 ticks/rev * 10 Rotations in either direction */
-			// double targetPos = position * 2048 * 10.0;
-      m_position = position;
-      // m_bucketMotor.set(TalonFXControlMode.MotionMagic, m_position);
+    // double targetPos = position * 2048 * 10.0;
+    m_bucketMotor.selectProfileSlot(
+      BucketMotorConstants.kPosSlotIdx, BucketMotorConstants.kPIDLoopIdx);
+    m_controlMode = TalonFXControlMode.Position;
+    m_position = position;
+    // m_bucketMotor.set(TalonFXControlMode.MotionMagic, m_position);
+  }
+
+  public void setToPositionMM(int position) {
+    m_bucketMotor.selectProfileSlot(
+      BucketMotorConstants.kMMSlotIdx, BucketMotorConstants.kPIDLoopIdx);
+    m_controlMode = TalonFXControlMode.MotionMagic;
+    m_position = position;
   }
 
   public void setMotionSCurveStrength(int smoothing) {
@@ -158,6 +200,6 @@ public class BucketSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_bucketMotor.set(TalonFXControlMode.MotionMagic, m_position);
+    m_bucketMotor.set(m_controlMode, m_position);
   }
 }

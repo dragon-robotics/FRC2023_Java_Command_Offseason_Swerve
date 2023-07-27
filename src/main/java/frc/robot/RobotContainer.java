@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.CustomButtonBoxConstants;
 import frc.robot.Constants.Extreme3DProConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -33,6 +34,9 @@ public class RobotContainer {
 
   private final CommandJoystick m_operatorController =
       new CommandJoystick(OperatorConstants.kOperatorControllerPort);
+
+  private final CommandJoystick m_operatorButtonController =
+      new CommandJoystick(OperatorConstants.kOperatorButtonControllerPort);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -87,17 +91,41 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(true)))
         .onFalse(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(false)));
     
+    // Motion Magic Controller Setpoints //
     m_operatorController.button(JoystickConstants.BTN_B)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-4096)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     m_operatorController.button(JoystickConstants.BTN_X)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-16384)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-16384)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     m_operatorController.button(JoystickConstants.BTN_Y)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-2048)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+
+    // Position Controller Setpoints //
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_8)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_6)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-2048)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)));
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_4)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+        
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_1)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-6144)))
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_7)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4608)))
+        
+        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+
 
     // 3.   Home - starting configuration
     // 2.   Single player station - Cone & Cube

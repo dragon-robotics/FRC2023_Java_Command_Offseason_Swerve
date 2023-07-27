@@ -39,6 +39,22 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
+    public static final int kOperatorButtonControllerPort = 2;
+  }
+
+  public static class CustomButtonBoxConstants {
+    public static final int BTN_1 = 1;
+    public static final int BTN_2 = 2;
+    public static final int BTN_3 = 3;
+    public static final int BTN_4 = 4;
+    public static final int BTN_5 = 5;
+    public static final int BTN_6 = 6;
+    public static final int BTN_7 = 7;
+    public static final int BTN_8 = 8;
+    public static final int BTN_9 = 9;
+    public static final int BTN_10 = 10;
+    public static final int BTN_11 = 11;
+    public static final int BTN_12 = 12;        
   }
 
   public static class JoystickConstants {
@@ -95,7 +111,8 @@ public final class Constants {
      * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
      * configuration.
      */
-    public static final int kSlotIdx = 0;
+    public static final int kMMSlotIdx = 0;
+    public static final int kPosSlotIdx = 1;
 
     /**
      * Talon FX supports multiple (cascaded) PID loops. For
@@ -119,11 +136,22 @@ public final class Constants {
 	   * Gains used in Motion Magic, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
-    public static final double kP = 1;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
-    public static final double kF = 0.125;
-    public static final int kIzone = 0;
-    public static final double kPeakOutput = 1.0;
+    public static final double kMMP = 1;
+    public static final double kMMI = 0.0;
+    public static final double kMMD = 0.0;
+    public static final double kMMF = 0.125;
+    public static final int kMMIzone = 0;
+    public static final double kMMPeakOutput = 1.0;
+
+    /**
+	   * Gains used in Position, to be adjusted accordingly
+     * Gains(kp, ki, kd, kf, izone, peak output);
+     */
+    public static final double kPosP = 0.125;
+    public static final double kPosI = 0.0;
+    public static final double kPosD = 0.0;
+    public static final double kPosF = 0.125;
+    public static final int kPosIzone = 0;
+    public static final double kPosPeakOutput = 1.0;
   }
 }
