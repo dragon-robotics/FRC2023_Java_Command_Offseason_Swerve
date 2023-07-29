@@ -58,9 +58,9 @@ public class RobotContainer {
 
     m_swerveDriveSubsystem.setDefaultCommand(
       m_swerveDriveSubsystem.drive(
-        () -> -m_driverController.getRawAxis(Extreme3DProConstants.Y_AXIS) * 0.3, // Translation
-        () -> -m_driverController.getRawAxis(Extreme3DProConstants.X_AXIS) * 0.3, // Strafe
-        () -> -m_driverController.getRawAxis(Extreme3DProConstants.ROTATE) * 0.3  // Rotation
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.Y_AXIS), // Translation
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.X_AXIS), // Strafe
+        () -> -m_driverController.getRawAxis(Extreme3DProConstants.ROTATE)  // Rotation
       )
     );
 
@@ -105,23 +105,23 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     // Position Controller Setpoints //
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_8)
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_12)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)))
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
     
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_6)
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_8)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-2048)))
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_4)
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_5)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)))
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
         
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_1)
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_4)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-6144)))
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
     
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_7)
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_1)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4608)))
         
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
