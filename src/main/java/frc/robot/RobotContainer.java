@@ -92,17 +92,17 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(false)));
     
     // Motion Magic Controller Setpoints //
-    m_operatorController.button(JoystickConstants.BTN_B)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-4096)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    // m_operatorController.button(JoystickConstants.BTN_B)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-4096)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
-    m_operatorController.button(JoystickConstants.BTN_X)
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_11)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-16384)))
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
-    m_operatorController.button(JoystickConstants.BTN_Y)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-2048)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    // m_operatorController.button(JoystickConstants.BTN_Y)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-2048)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     // Position Controller Setpoints //
     m_operatorButtonController.button(CustomButtonBoxConstants.BTN_12)
@@ -123,7 +123,6 @@ public class RobotContainer {
     
     m_operatorButtonController.button(CustomButtonBoxConstants.BTN_1)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4608)))
-        
         .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
 
