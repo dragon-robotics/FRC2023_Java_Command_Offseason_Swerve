@@ -77,10 +77,6 @@ public class RobotContainer {
     //   )
     // );
 
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_swerveDriveSubsystem::exampleCondition)
-    //     .onTrue(new ExampleCommand(m_swerveDriveSubsystem));
-
     // When thumb button is pressed by the driver, zero the gyro //
     m_driverController.button(Extreme3DProConstants.BTN_TRIGGER)
         .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.zeroGyro()));
@@ -154,6 +150,57 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     // return Autos.exampleAuto(m_swerveDriveSubsystem);
-    return null;
+    // return null;
+
+    // Score Cube and Exit Community //
+    return Commands.sequence(
+      // Score Cube //
+      Commands.startEnd(
+          () -> m_bucketSubsystem.setToPositionMM(-16384),
+          () -> m_bucketSubsystem.setToPosition(0),
+          m_bucketSubsystem).withTimeout(1),
+      // Wait 0.5 seconds //
+      Commands.waitSeconds(0.5),
+      // Exit Community //
+      Commands.startEnd(
+          () -> m_swerveDriveSubsystem.autoDrive(0, 0.5, 0),
+          () -> m_swerveDriveSubsystem.autoDrive(0, 0, 0),
+          m_swerveDriveSubsystem
+        ).withTimeout(4)
+    );
+
+    // // Score Cube and Balance //
+    // return Commands.sequence(
+    //   // Score Cube //
+    //   Commands.startEnd(
+    //       () -> m_bucketSubsystem.setToPositionMM(-16384),
+    //       () -> m_bucketSubsystem.setToPosition(0),
+    //       m_bucketSubsystem).withTimeout(1),
+    //   // Wait 0.5 seconds //
+    //   Commands.waitSeconds(0.5),
+    //   // Balance //
+    //   Commands.startEnd(
+    //       () -> m_swerveDriveSubsystem.autoDrive(0, 0.5, 0),
+    //       () -> m_swerveDriveSubsystem.autoDrive(0, 0, 0),
+    //       m_swerveDriveSubsystem
+    //     ).withTimeout(4)
+    // );
+
+    // Score Cube and Greedy Balance //
+    // return Commands.sequence(
+    //   // Score Cube //
+    //   Commands.startEnd(
+    //       () -> m_bucketSubsystem.setToPositionMM(-16384),
+    //       () -> m_bucketSubsystem.setToPosition(0),
+    //       m_bucketSubsystem).withTimeout(1),
+    //   // Wait 0.5 seconds //
+    //   Commands.waitSeconds(0.5),
+    //   Commands.startEnd(
+    //       () -> m_swerveDriveSubsystem.autoDrive(0, 0.5, 0),
+    //       () -> m_swerveDriveSubsystem.autoDrive(0, 0, 0),
+    //       m_swerveDriveSubsystem
+    //     ).withTimeout(4)
+    // );
+    
   }
 }

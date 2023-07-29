@@ -58,6 +58,32 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
   }
 
+  public void autoDrive(
+    double translation,
+    double strafe,
+    double rotation
+  ) {
+    double translationVal =
+        translationLimiter.calculate(
+            MathUtil.applyDeadband(
+                translation, Constants.GeneralConstants.swerveDeadband));
+    double strafeVal =
+        strafeLimiter.calculate(
+            MathUtil.applyDeadband(
+                strafe, Constants.GeneralConstants.swerveDeadband));
+    double rotationVal =
+        rotationLimiter.calculate(
+            MathUtil.applyDeadband(
+                rotation, Constants.GeneralConstants.swerveDeadband));
+
+    drive(
+        new Translation2d(translationVal, strafeVal)
+            .times(swerve.swerveController.config.maxSpeed),
+        rotationVal * swerve.swerveController.config.maxAngularVelocity,
+        true,
+        false);
+  }
+  
   public Command drive(
     DoubleSupplier translationSup,
     DoubleSupplier strafeSup,
