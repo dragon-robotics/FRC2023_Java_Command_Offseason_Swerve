@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     // Makes sure the motor is in brake mode after auto has stopped //
-    m_robotContainer.setMotorBrake(true);
+    // m_robotContainer.setMotorBrake(true);
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

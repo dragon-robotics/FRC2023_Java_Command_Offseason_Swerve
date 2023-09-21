@@ -25,8 +25,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveDriveSubsystem m_swerveDriveSubsystem = new SwerveDriveSubsystem();
-  private final BucketSubsystem m_bucketSubsystem = new BucketSubsystem();
+  public final SwerveDriveSubsystem m_swerveDriveSubsystem = new SwerveDriveSubsystem();
+  public final BucketSubsystem m_bucketSubsystem = new BucketSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverController =
@@ -65,15 +65,17 @@ public class RobotContainer {
     );
 
     // m_bucketSubsystem.setDefaultCommand(
-    //   Commands.run(
+    //   Commands.startEnd(
     //     () -> m_bucketSubsystem.setToPosition(0),
     //     m_bucketSubsystem)
     // );
 
     // m_bucketSubsystem.setDefaultCommand(
-    //   new MoveBucket(
-    //     m_bucketSubsystem,
-    //     () -> -m_operatorController.getRawAxis(JoystickConstants.STICK_RIGHT_Y) * 0.3
+    //   Commands.run(
+    //     () -> m_bucketSubsystem.move(
+    //       -m_operatorController.getRawAxis(JoystickConstants.STICK_RIGHT_Y) * 0.3
+    //     ),
+    //     m_bucketSubsystem
     //   )
     // );
 
@@ -87,6 +89,28 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(true)))
         .onFalse(new InstantCommand(() -> m_swerveDriveSubsystem.setThrottle(false)));
     
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_3)
+        .onTrue(Commands.run(
+          () -> m_bucketSubsystem.move(-0.3),
+          m_bucketSubsystem
+        ))
+        .onFalse(
+          Commands.run(
+          () -> m_bucketSubsystem.stop(),
+          m_bucketSubsystem
+        ));
+
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_2)
+        .onTrue(Commands.run(
+          () -> m_bucketSubsystem.move(0.3),
+          m_bucketSubsystem
+        ))
+        .onFalse(
+          Commands.run(
+          () -> m_bucketSubsystem.stop(),
+          m_bucketSubsystem
+        ));
+    
     // Motion Magic Controller Setpoints //
     // m_operatorController.button(JoystickConstants.BTN_B)
     //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-4096)))
@@ -94,32 +118,38 @@ public class RobotContainer {
 
     m_operatorButtonController.button(CustomButtonBoxConstants.BTN_11)
         .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-16384)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+
+    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_7)
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)))
+
+    // m_operatorButtonController.button(CustomButtonBoxConstants.BTN_7)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-16384)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     // m_operatorController.button(JoystickConstants.BTN_Y)
     //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-2048)))
     //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     // Position Controller Setpoints //
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_12)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    // m_operatorButtonController.button(CustomButtonBoxConstants.BTN_12)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(0)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
     
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_8)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-2048)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    // m_operatorButtonController.button(CustomButtonBoxConstants.BTN_8)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-2048)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_5)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    // m_operatorButtonController.button(CustomButtonBoxConstants.BTN_5)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4096)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
         
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_4)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-6144)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    // m_operatorButtonController.button(CustomButtonBoxConstants.BTN_4)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-6144)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
     
-    m_operatorButtonController.button(CustomButtonBoxConstants.BTN_1)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4608)))
-        .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
+    // m_operatorButtonController.button(CustomButtonBoxConstants.BTN_1)
+    //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPosition(-4608)))
+    //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
 
     // 3.   Home - starting configuration
@@ -154,19 +184,19 @@ public class RobotContainer {
 
     // Score Cube and Exit Community //
     return Commands.sequence(
-      // Score Cube //
+      // // Score Cube //
       Commands.startEnd(
           () -> m_bucketSubsystem.setToPositionMM(-16384),
-          () -> m_bucketSubsystem.setToPosition(0),
-          m_bucketSubsystem).withTimeout(1),
+          () -> m_bucketSubsystem.setToPositionMM(0),
+          m_bucketSubsystem).withTimeout(2),
       // Wait 0.5 seconds //
       Commands.waitSeconds(0.5),
       // Exit Community //
       Commands.startEnd(
-          () -> m_swerveDriveSubsystem.autoDrive(0, 0.5, 0),
+          () -> m_swerveDriveSubsystem.autoDrive(0.5, 0, 0),
           () -> m_swerveDriveSubsystem.autoDrive(0, 0, 0),
           m_swerveDriveSubsystem
-        ).withTimeout(4)
+        ).withTimeout(3)
     );
 
     // // Score Cube and Balance //
