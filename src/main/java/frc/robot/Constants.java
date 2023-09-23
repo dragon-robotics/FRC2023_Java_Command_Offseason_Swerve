@@ -154,4 +154,13 @@ public final class Constants {
     public static final int kPosIzone = 0;
     public static final double kPosPeakOutput = 1.0;
   }
+
+  public static class AutoBalancePIDConstants {
+    // Auto Balance Constants //
+    public static final double P = 0.11;
+    public static final double D = 0.0;
+    public static final double I = 0.0;
+    public static final double DEG_TOL = 3.5;
+    public static final double DEG_PER_S_TOL = 1.5;
+  }
 }

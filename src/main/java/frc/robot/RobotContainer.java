@@ -4,10 +4,15 @@
 
 package frc.robot;
 
+import frc.robot.AutoLoader.AutoCommand;
 import frc.robot.Constants.CustomButtonBoxConstants;
 import frc.robot.Constants.Extreme3DProConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AutoBalance;
+import frc.robot.commands.CommunityExitCommand;
+import frc.robot.commands.ScoreCubeAndBalanceCommand;
+import frc.robot.commands.ScoreCubeAndExitCommunityCommand;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -38,6 +43,8 @@ public class RobotContainer {
   private final CommandJoystick m_operatorButtonController =
       new CommandJoystick(OperatorConstants.kOperatorButtonControllerPort);
 
+  // Create the auto loader class to load everything for us //
+  private final AutoLoader m_autoLoader = new AutoLoader();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -178,26 +185,39 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    // return Autos.exampleAuto(m_swerveDriveSubsystem);
-    // return null;
+    // Get command selected from AutoCommand //
+    AutoCommand command = m_autoLoader.getSelected();
 
+    switch (command) {
+      case NONE:
+        return null;
+      case COMMUNITY_EXIT:
+        return new CommunityExitCommand(m_swerveDriveSubsystem, -0.4,4);
+      case BALANCE:
+        return new AutoBalance(m_swerveDriveSubsystem);
+      case SCORE_CUBE_AND_BALANCE:
+        return new ScoreCubeAndBalanceCommand(m_swerveDriveSubsystem, m_bucketSubsystem);
+      case SCORE_CUBE_AND_COMMUNITY_EXIT:
+        return new ScoreCubeAndExitCommunityCommand(m_swerveDriveSubsystem, m_bucketSubsystem);
+      default:
+        return null;
+    }
     // Score Cube and Exit Community //
-    return Commands.sequence(
-      // // Score Cube //
-      Commands.startEnd(
-          () -> m_bucketSubsystem.setToPositionMM(-16384),
-          () -> m_bucketSubsystem.setToPositionMM(0),
-          m_bucketSubsystem).withTimeout(2),
-      // Wait 0.5 seconds //
-      Commands.waitSeconds(0.5),
-      // Exit Community //
-      Commands.startEnd(
-          () -> m_swerveDriveSubsystem.autoDrive(0.5, 0, 0),
-          () -> m_swerveDriveSubsystem.autoDrive(0, 0, 0),
-          m_swerveDriveSubsystem
-        ).withTimeout(3)
-    );
+    // return Commands.sequence(
+    //   // // Score Cube //
+    //   Commands.startEnd(
+    //       () -> m_bucketSubsystem.setToPositionMM(-16384),
+    //       () -> m_bucketSubsystem.setToPositionMM(0),
+    //       m_bucketSubsystem).withTimeout(2),
+    //   // Wait 0.5 seconds //
+    //   Commands.waitSeconds(0.5),
+    //   // Exit Community //
+    //   Commands.startEnd(
+    //       () -> m_swerveDriveSubsystem.autoDrive(0.5, 0, 0),
+    //       () -> m_swerveDriveSubsystem.autoDrive(0, 0, 0),
+    //       m_swerveDriveSubsystem
+    //     ).withTimeout(3)
+    // );
 
     // // Score Cube and Balance //
     // return Commands.sequence(

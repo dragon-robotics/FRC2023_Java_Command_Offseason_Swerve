@@ -61,8 +61,18 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void autoDrive(
     double translation,
     double strafe,
-    double rotation
+    double rotation,
+    boolean balance
   ) {
+
+    if(balance){
+      if(translation > 0.2){
+        translation = 0.2;
+      } else if (translation < -0.2){
+        translation = -0.2;
+      }
+    }
+
     double translationVal =
         translationLimiter.calculate(
             MathUtil.applyDeadband(
