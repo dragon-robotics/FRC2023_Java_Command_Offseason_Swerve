@@ -20,7 +20,7 @@ public class AutoBalance extends SequentialCommandGroup {
     addCommands(
       // Exit Community //
       // Which direction the robot is driving //
-      new CommunityExitCommand(swerveDrive, -0.5, 1),
+      new CommunityExitCommand(swerveDrive, 0.5, 1),
       // Which axis the rotation is on? //
       new AutoBalancePIDCommand(swerveDrive, 0)
     );

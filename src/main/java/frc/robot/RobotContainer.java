@@ -192,7 +192,7 @@ public class RobotContainer {
       case NONE:
         return null;
       case COMMUNITY_EXIT:
-        return new CommunityExitCommand(m_swerveDriveSubsystem, -0.4,4);
+        return new CommunityExitCommand(m_swerveDriveSubsystem, 0.5, 3);
       case BALANCE:
         return new AutoBalance(m_swerveDriveSubsystem);
       case SCORE_CUBE_AND_BALANCE:

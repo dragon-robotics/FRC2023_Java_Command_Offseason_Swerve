@@ -26,7 +26,7 @@ public class ScoreCubeAndExitCommunityCommand extends SequentialCommandGroup {
       new WaitCommand(0.5),
       new InstantCommand(() -> bucket.setToPositionMM(0)),
       // Exit Community //
-      new CommunityExitCommand(swerveDrive, -0.5, 4)
+      new CommunityExitCommand(swerveDrive, 0.5, 4)
     );
   }
 }
