@@ -117,10 +117,10 @@ public class RobotContainer {
     //     .onFalse(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     m_operatorButtonController.button(CustomButtonBoxConstants.BTN_11)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-16384)))
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-16384)));
 
     m_operatorButtonController.button(CustomButtonBoxConstants.BTN_7)
-        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)))
+        .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(0)));
 
     // m_operatorButtonController.button(CustomButtonBoxConstants.BTN_7)
     //     .onTrue(new InstantCommand(() -> m_bucketSubsystem.setToPositionMM(-16384)))
